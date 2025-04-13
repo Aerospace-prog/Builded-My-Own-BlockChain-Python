@@ -1,4 +1,4 @@
-# Build Your Own Blockchain (Python)
+# Build My Own Blockchain By (Python)
 
 This project demonstrates the fundamentals of blockchain architecture by implementing a simple blockchain in Python from scratch — no frameworks, just logic.
 
