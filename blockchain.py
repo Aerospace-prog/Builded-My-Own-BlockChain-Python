@@ -1,6 +1,6 @@
 import hashlib, json, sys, random, copy
 
-#HASHING HELPER
+#HASHING HELPER - here we have created a function that will hash the input string
 def hashMe(msg=""):
     if type(msg) != str:
         msg = json.dumps(msg, sort_keys=True)
@@ -10,7 +10,7 @@ def hashMe(msg=""):
         return hashlib.sha256(str(msg).encode('utf-8')).hexdigest()
     
 
-#TRANSACTION GENERATOR
+#TRANSACTION GENERATOR - here we have created a function that will generate a random transaction
 
 random.seed(0)
 
@@ -21,11 +21,11 @@ def makeTransaction(maxValue=3):
     bobPays = -1 * alicePays
     return {'Alice': alicePays, 'Bob': bobPays}
 
-#TRANSACTION BUFFER
+#TRANSACTION BUFFER - here we have created a function that will store the transactions in a buffer(a temporary storage area for data)
 
 txnBuffer = [makeTransaction() for i in range(30)]
 
-#STATE UPDATE AND VALIDATION
+#STATE UPDATE AND VALIDATION - real time balances - which checks transac validity and state updation
 
 def updateState(txn, state):
     state = state.copy()
@@ -45,7 +45,7 @@ def isValidTxn(txn, state):
             return False
     return True
 
-#GENESIS BLOCK CREATION
+#GENESIS BLOCK CREATION - here we have created a genesis block which is the first block in the blockchain
 
 state = {'Alice': 50, 'Bob': 50}
 genesisBlockTxns = [state]
@@ -61,8 +61,9 @@ genesisBlock = {
     'contents': genesisBlockContents
 }
 chain = [genesisBlock]
+#print(json.dumps(chain[0], indent=4))
 
-#BLOCK CREATER
+#BLOCK CREATER  - here we are creating new blocks
 
 def makeBlock(txns, chain):
     parentBlock = chain[-1]
@@ -80,7 +81,7 @@ def makeBlock(txns, chain):
     return block
 
 
-#BUILD THE BLOCKCHAIN
+#BUILD THE BLOCKCHAIN - here we are creating new blocks and attaching them to the genesis block
 
 blockSizeLimit = 5
 
@@ -97,14 +98,14 @@ while len(txnBuffer) > 0:
     chain.append(block)
 
 
-#CHAIN VALIDATION
+#CHAIN VALIDATION - to secure and tamper-proof
 
-def checkBlockHash(block):
+def checkBlockHash(block): # check if the block's hash is correct
     expectedHash = hashMe(block['contents'])
     if block['hash'] != expectedHash:
         raise Exception('Invalid block hash at block %s' % block['contents']['blockNumber'])
 
-def checkBlockValidity(block, parent, state):
+def checkBlockValidity(block, parent, state): # check if the block is valid
     parentNumber = parent['contents']['blockNumber']
     parentHash = parent['hash']
     blockNumber = block['contents']['blockNumber']
@@ -124,7 +125,7 @@ def checkBlockValidity(block, parent, state):
     
     return state
 
-def checkChain(chain):
+def checkChain(chain): # check if the chain is valid
     if isinstance(chain, str):
         chain = json.loads(chain)
     state = {}
@@ -138,7 +139,7 @@ def checkChain(chain):
     return state
 
 
-#Simulate Node Receiving a New Block
+#Simulate Node Receiving a New Block - sync blocks across the network
 
 nodeBchain = copy.copy(chain)
 nodeBtxns = [makeTransaction() for i in range(5)]
