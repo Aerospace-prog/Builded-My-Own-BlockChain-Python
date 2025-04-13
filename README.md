@@ -11,7 +11,7 @@ This project demonstrates the fundamentals of blockchain architecture by impleme
 
 ## How to Run
 ```bash
-python blockchain.py
+python3 blockchain.py
 ```
 
 ## Author
